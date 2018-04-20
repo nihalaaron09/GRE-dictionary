@@ -16,6 +16,8 @@ struct node{
 int hash (char[]);
 void ViewList(struct node * []);
 void FlashCard(struct node * []);
+char * LowerCase(char[]);
+void Search(struct node *[]);
 
 int main()
 {
@@ -51,8 +53,8 @@ while (i<num_of_words){
  code = hash(word);                  // obtain hash code for current word
  //printf("%s %s\n", word, meaning);
  struct node * new_node = malloc(sizeof(struct node));   //define temporary new_node
- strcpy(new_node->key,word);
- strcpy(new_node->value,meaning);
+ strcpy(new_node->key,LowerCase(word));
+ strcpy(new_node->value,LowerCase(meaning));
  HashTable[code] = new_node;         // assign new_node at the code position in HashTable
  i++;
 } // while
@@ -60,12 +62,13 @@ while (i<num_of_words){
 int flag=0;
 while(1) {
 int option=0;
-printf("Hit 1.View List 2.Flash Card Mode\n");
+printf("Hit 1.View List 2.Flash Card Mode 3. Search a word\n");
 scanf("%d",&option);
 switch(option)
 {
 	case 1: ViewList(HashTable);break;
 	case 2: FlashCard(HashTable);break;
+	case 3: Search(HashTable); break;
 	default: printf("Invalid Option Try Again\n");break;
 }	
 printf("To exit the application press 0 or press 9 to continue\n");
@@ -138,3 +141,23 @@ printf("Your total score is %d. Thank You for using Flash Card mode :)\n", score
 }// end of FlashCard mode
 
 
+char * LowerCase(char str[])
+{
+for(int i = 0; str[i]; i++){
+  str[i] = tolower(str[i]);
+}
+return str;
+}
+
+
+void Search(struct node * HashTable[])
+{
+char word[20];
+printf("Enter a word you want to search in the list: \n");
+scanf("%s", word);
+int new_code=hash(word);
+if (HashTable[new_code]==NULL)
+	printf("Sorry, the word is not present in the list\n");
+else
+ printf("Meaning is: %s", HashTable[new_code]->value);
+}

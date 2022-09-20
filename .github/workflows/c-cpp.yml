@@ -2,22 +2,22 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches-ignore: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
 jobs:
   build:
-
+    name: Lint Code Base
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      with:
+        fetch-depth: 0
+    - name: Super-Linter
+      uses: github/super-linter@v4.9.5
+      env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
